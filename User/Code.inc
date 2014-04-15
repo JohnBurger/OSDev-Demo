@@ -123,9 +123,9 @@ User.Entry:
 .Wait:
 ;               HLT                             ; Illegal User-mode instruction!
 
-;                User.Halt                       ; So, use system-provided one
+                User.Halt                       ; So, use system-provided one
 
-                User.Yield                      ; This has a different effect
+;               User.Yield                      ; This has a different effect
 
 ; This is an alternative to using HLT
 ;                PUSH            ECX

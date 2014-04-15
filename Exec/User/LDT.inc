@@ -45,7 +45,7 @@ Exec.User.LDT:
                 TEST            EAX,EAX                 ; Any left?
                 JZ              .Failed                 ; Nope!
 
-                MOV             DL,Type.Mem(Data, DPL3, RW) & ~x86.Desc.Type.Present
+                MOV             DL,Type.Mem(Data, DPL3, RW); & ~x86.Desc.Type.Present
                 MOV             DH,Gran.Mem(Byte, Big)
                 CALL            Exec.Alloc.LDT.Mem      ; Allocate LDT Entry
                 CMP             EAX,User.LDT.Data
@@ -54,7 +54,7 @@ Exec.User.LDT:
                 ; Allocate Code
                 MOV             EAX,User.Base           ; Assembled User code
                 MOV             ECX,User.Size
-                MOV             DL,Type.Mem(Code, DPL3, NoRW) & ~x86.Desc.Type.Present
+                MOV             DL,Type.Mem(Code, DPL3, NoRW); & ~x86.Desc.Type.Present
                 MOV             DH,Gran.Mem(Byte, Def32)
                 CALL            Exec.Alloc.LDT.Mem      ; Allocate LDT Entry
                 CMP             EAX,User.LDT.Code

@@ -4,7 +4,7 @@
 
 ; This file holds the definitions for the ISO standard. The biggest oddity is
 ; their way of catering for both little-endian and big-endian systems out there:
-; rhey avoid it altogether and use a both-endian double-sized structure!
+; they avoid it altogether and use a both-endian double-sized structure!
 
 ; The following have been defined by the ISO standard
 ISO.Sector.Size EQU             2048
