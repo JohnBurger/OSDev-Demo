@@ -13,8 +13,6 @@
 ;-------------------------------------------------------------------------------
 %include        "Ints/Debug/Debug.inc"  ; Example debug handler
 ;-------------------------------------------------------------------------------
-%include        "Ints/NoSeg.inc"        ; Example No Segment handler
-;-------------------------------------------------------------------------------
 %include        "Ints/User.inc"         ; Demonstrate User System Services
 ;-------------------------------------------------------------------------------
 %include        "Ints/IRQs.inc"         ; Vectors for each IRQ
