@@ -11,5 +11,4 @@ Boot.Entry:
 .Start:
                 XOR             AX,AX           ; Initialise the stack
                 MOV             SS,AX           ; The BIOS's place is ludicrous
-                MOV             ESP,BIOS.Entry  ; So put ESP somewhere sane
-; Note we can now use 32-bit addressing with [ESP] to access the stack
+                MOV             SP,BIOS.Entry   ; So put SP somewhere sane

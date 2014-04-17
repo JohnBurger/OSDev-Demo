@@ -15,6 +15,14 @@ Load.Sectors    EQU             Load.Size / BIOS.Disk.Sector.Size
 ; Upon entry, DL is BIOS drive number, ES:SI is Hard Disk Partition entry (if any)
 Boot.Load:
                 MOV             AX,Load.Base>>4    ; Segment to load to
+                JMP             Boot.Skip          ; JMP over potential MBR write!
+
+Boot.Skip.Pad   EQU             BIOS.MBR.BPB.Write - ($-$$)
+                TIMES           Boot.Skip.Pad DB 00h
+
+Boot.MBR.BPB    DB              00h
+
+Boot.Skip:
 ;               MOV             ES,AX              ; Not yet! Need BIOS value
                 XOR             BX,BX              ; Offset to load to
 

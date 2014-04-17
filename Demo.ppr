@@ -37,6 +37,7 @@ Demo
 		BIOS\VGA.inc
 		BIOS\Disk.inc
 		BIOS\MBR.inc
+		BIOS\BPB.inc
 		BIOS\MemMap.inc
 	-Dev
 		Dev\Dev.inc

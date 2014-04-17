@@ -23,4 +23,6 @@ BIOS.RAMTop.Int EQU             12h
 ;-------------------------------------------------------------------------------
 %include        "BIOS/MBR.inc"          ; Definitions for Master Boot Record
 ;-------------------------------------------------------------------------------
+%include        "BIOS/BPB.inc"          ; Definitions for BIOS Parameter Block
+;-------------------------------------------------------------------------------
 %include        "BIOS/MemMap.inc"       ; Definitions for boot-time memory map
