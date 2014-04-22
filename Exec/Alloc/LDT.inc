@@ -32,8 +32,8 @@ Exec.Alloc.LDT:
                 MOV             [%$Base],EAX
 
                 MOV             EBX,EAX          ; Base to allocate
-                MOV             DL,Type.Mem(Data, DPL0, RW)
-                MOV             DH,Gran.Mem(Byte, Small)
+                MOV             DL,Type.Mem(Data, DPL0, RW) & ~System.Present
+                MOV             DH,Gran.Mem(Byte, Small) ; Will become LDT later
                 CALL            Exec.Alloc.GDT.Mem ; Get Descriptor to use
                 TEST            EAX,EAX          ; Any left?
                 JZ              .End             ; Pity that! **** Memory leak! ****
@@ -51,7 +51,7 @@ Exec.Alloc.LDT:
                 ; Set up second entry as an alias for this very LDT
                 MOV             EAX,[%$Base]            ; Pass Base in
                 MOV             ECX,[%$Size]            ; Size
-                MOV             DL,Type.Mem(Data, DPL0, RW)
+                MOV             DL,Type.Mem(Data, DPL0, RW) & ~System.Present
                 MOV             DH,Gran.Mem(Byte, Small)
                 CALL            Exec.Alloc.LDT.Mem      ; Allocate LDT entry
 

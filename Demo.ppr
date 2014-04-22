@@ -2,7 +2,7 @@
 Compilator.FileName=C:\NASM\NASM.exe
 Compilator.PSPar=-l %Name%.lst %Name%%Ext%
 Compilator.Log=%Name%.lst
-Compilator.Run=CMD /c COPY %Name% %Name%.iso && COPY %Name% %Name%.flp
+Compilator.Run=CMD /c COPY %Name% %Name%.iso && COPY %Name% %Name%.flp && PAUSE
 Compilator.SaveAll=1
 Compilator.Capture=1
 Compilator.ParsLog=%F:%L:* ; NASM
