@@ -24,7 +24,7 @@ Exec.User.LDT:
                 MOV             DL,Type.Mem(Stack, DPL0, RW)
                 MOV             DH,Gran.Mem(Byte, Small)
                 CALL            Exec.Alloc.LDT.Mem      ; Allocate LDT Entry
-                CMP             EAX,User.LDT.Stack0
+                CMP             AX,User.LDT.Stack0
                 JNE             .Failed
 
                 ; Allocate Stack3
@@ -36,7 +36,7 @@ Exec.User.LDT:
                 MOV             DL,Type.Mem(Stack, DPL3, RW)
                 MOV             DH,Gran.Mem(Byte, Small)
                 CALL            Exec.Alloc.LDT.Mem      ; Allocate LDT Entry
-                CMP             EAX,User.LDT.Stack3
+                CMP             AX,User.LDT.Stack3
                 JNE             .Failed
 
                 ; Allocate Data
@@ -48,7 +48,7 @@ Exec.User.LDT:
                 MOV             DL,Type.Mem(Data, DPL3, RW) & ~System.Present
                 MOV             DH,Gran.Mem(Byte, Big)
                 CALL            Exec.Alloc.LDT.Mem      ; Allocate LDT Entry
-                CMP             EAX,User.LDT.Data
+                CMP             AX,User.LDT.Data
                 JNE             .Failed
 
                 ; Allocate Code
@@ -57,7 +57,7 @@ Exec.User.LDT:
                 MOV             DL,Type.Mem(Code, DPL3, NoRW) & ~System.Present
                 MOV             DH,Gran.Mem(Byte, Def32)
                 CALL            Exec.Alloc.LDT.Mem      ; Allocate LDT Entry
-                CMP             EAX,User.LDT.Code
+                CMP             AX,User.LDT.Code
                 JNE             .Failed
 
                 ; Now enable the LDT

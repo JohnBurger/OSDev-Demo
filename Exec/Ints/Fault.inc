@@ -13,8 +13,8 @@
 
 ; This function should be called by the specific Fault handlers' initialisation,
 ; after they set up some registers:
-; Input:  EAX = Offset of Descriptor in the IDT to modify
-;         EBX = Pointer to the Stack/Alias/Fault Triple in the LDT
+; Input:  AX  = Offset of Descriptor in the IDT to modify
+;         BX  = Pointer to the Stack/Alias/Fault Triple in the LDT
 ;         EDX = Specific Fault handler entry point.
 ; Output:
 ;         A new 4 kiB Stack for the first Descriptor in the Triple

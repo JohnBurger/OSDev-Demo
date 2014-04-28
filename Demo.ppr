@@ -70,7 +70,6 @@ Demo
 			Ints\Debug\Regs.inc
 			Ints\Debug\Show.inc
 			Ints\Debug\Key.inc
-		Ints\NoSeg.inc
 		Ints\User.inc
 		Ints\IRQs.inc
 		Ints\Timer.inc

@@ -48,12 +48,13 @@ Exec.Alloc.DT:
 ; Although a Fault is only generated when a Descriptor is loaded, that is
 ; PRECISELY what happens during the return from an interrupt!
 ; In other words, it's NOT safe to keep it, even if "only for a little while..."
-; Input:  ES:EBX = Descriptor Table entry to modify
+; Input:  ES:BX  = Descriptor Table entry to modify
 ;         CX:EAX = Selector : Offset of System entry
 ;         DL     = Descriptor Type
 ; Output: EAX modified
 
 Exec.Alloc.DT.Sys:
+                MOVZX           EBX,BX
                 MOV             [ES:EBX + x86.Desc.Sys.OffsetLo],AX
                 SHR             EAX,16
                 MOV             [ES:EBX + x86.Desc.Sys.Selector],CX
@@ -67,7 +68,7 @@ Exec.Alloc.DT.Sys:
 ; Any Segment register containing the old value needs to be refreshed.
 ; Note that an interrupt WILL re-load a segment register: you cannot safely
 ; assume that a "stale" Segment register still uses the old data!
-; Input:  ES:EBX = Descriptor Table entry to modify
+; Input:  ES:BX  = Descriptor Table entry to modify
 ;         EAX    = Base
 ;         ECX    = Size (Converted to Limit)
 ;         DL     = Descriptor Type
@@ -92,14 +93,22 @@ Exec.Alloc.DT.Mem:
                 SHR             ECX,12          ; Nope! Accommodate it
                 OR              DH,x86.Desc.Mem.Gran.Gran
 .Set:
-                MOV             [ES:EBX + x86.Desc.Mem.LimitLo],CX
+                PUSH            DS
+
+                PUSH            ES
+                POP             DS              ; Use DS - more efficient
+
+                MOVZX           EBX,BX
+                MOV             [EBX + x86.Desc.Mem.LimitLo],CX
                 SHR             ECX,16
-                MOV             [ES:EBX + x86.Desc.Mem.BaseLo], AX
+                MOV             [EBX + x86.Desc.Mem.BaseLo], AX
                 SHR             EAX,16
-                MOV             [ES:EBX + x86.Desc.Mem.BaseMid],AL
+                MOV             [EBX + x86.Desc.Mem.BaseMid],AL
                 OR              DH,CL
-                MOV             [ES:EBX + x86.Desc.Mem.Type],   DL
-                MOV             [ES:EBX + x86.Desc.Mem.Gran],   DH
-                MOV             [ES:EBX + x86.Desc.Mem.BaseHi], AH
+                MOV             [EBX + x86.Desc.Mem.Type],   DL
+                MOV             [EBX + x86.Desc.Mem.Gran],   DH
+                MOV             [EBX + x86.Desc.Mem.BaseHi], AH
+
+                POP             DS
 
                 RET

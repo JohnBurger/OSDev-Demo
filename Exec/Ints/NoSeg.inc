@@ -8,8 +8,8 @@
 ; call the Fatal Register displayer: instead it re-implements what the old
 ; handler did, only from the nested Task context.
 Exec.Ints.NoSeg:
-                MOV             EAX,IDT.NoSeg    ; This is the IDT Entry
-                MOV             EBX,Exec.LDT.NoSeg ; This is the LDT Triple
+                MOV             AX,IDT.NoSeg     ; This is the IDT Entry
+                MOV             BX,Exec.LDT.NoSeg ; This is the LDT Triple
                 MOV             EDX,.Handler     ; This is the handler
                 CALL            Exec.Ints.Fault  ; Set it up
                 RET
@@ -20,7 +20,7 @@ Exec.Ints.NoSeg:
                 TEST    BYTE    [ESP+4],x86.Seg.IDT ; Missing in IDT?
                 JZ              .NormalDT       ; Nope. Phew!
 .BadDT:
-                MOV             EBX,Exec.LDT.NoSeg.TSS  ; For TSS Backlink
+                MOV             BX,Exec.LDT.NoSeg.TSS  ; For TSS Backlink
                 CALL            Exec.Ints.Fault.Handler ; Can't handle this!
                 JMP             .Finish
 
