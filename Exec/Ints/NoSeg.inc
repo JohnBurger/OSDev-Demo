@@ -17,39 +17,51 @@ Exec.Ints.NoSeg:
 .Handler:
 ;               PUSH   DWORD    0               ; Pseudo-fault code (not required)
                 PUSH            11              ; Interrupt number
-                TEST    BYTE    [ESP+4],x86.Seg.IDT ; Missing in IDT?
-                JZ              .NormalDT       ; Nope. Phew!
-.BadDT:
-                MOV             BX,Exec.LDT.NoSeg.TSS  ; For TSS Backlink
+                MOV             EDX,[ESP+4]     ; Get Error code
+                TEST            DL,x86.Seg.IDT  ; Missing in IDT?
+                JZ              .NormalDT       ; Nope. Check for GDT/LDT
+
+.InIDT:
+                MOV             AX,Selector(Exec.LDT.IDT, LDT, RPL0) ; Yes
+                MOV             DS,AX           ; Point to IDT
+                JMP             .Present        ; Now present in IDT (even if zero!)
+
+.NormalDT:
+                MOV             AX,Selector(GDT.Alias, GDT, RPL0)
+                MOV             DS,AX
+
+                TEST            EDX,x86.Seg.TI   ; Does Error code show LDT Descriptor?
+                JNZ             .InLDT           ; Yes. Lots of work ahead!
+
+.InGDT:
+                TEST            DX,x86.Seg.Index ; Ignoring extra bits in Error code...
+                JNZ             .Present          ; Check for zero
+
+                ; VirtualBox PUSHes a zero error code. NOT very helpful!
+                MOV             BX,Exec.LDT.NoSeg.TSS   ; For TSS Backlink
                 CALL            Exec.Ints.Fault.Handler ; Can't handle this!
                 JMP             .Finish
 
-.NormalDT:
-                MOV             EBX,Exec.LDT.NoSeg.TSS ; For TSS Backlink
+.InLDT:
+; Now I've got a problem. I need to mark the Present bit in a Descriptor, but
+; that Descriptor is in the Faulting Task's LDT - which isn't mine, so I don't
+; have an alias to it! I need to create one...
+                PUSH            EDX
+
+                MOV             BX,Exec.LDT.NoSeg.TSS  ; For TSS Backlink
                 CALL            Exec.Ints.Fault.TSS    ; Find TSS Backlink
 
-; Now I've got a problem. I need to mark the Present bit in a Descriptor, but
-; that Descriptor may be in the Faulting Task's LDT - which isn't mine, so I
-; don't have an alias to it! I may need to create one...
-
-; For debugging, I'll always create the LDT alias.
                 MOV             AL,Type.Mem(Data, DPL0, RW) ; Alias' .Type (writable)
                 MOVZX           ESI,WORD [FS:x86.TSS.LDT] ; Point to faulting LDT
                 MOV             BX,Exec.LDT.NoSeg.LDT     ; Point to my Alias for it
 
                 CALL            Exec.Ints.Fault.Copy      ; Copy across
-
-; Move these three lines of code back above the "For debugging" comment above,
-; to avoid doing an unnecessary LDT copy for GDT Descriptors.
-                MOV             EDX,[ESP+4]      ; Get Error code
-                TEST            EDX,x86.Seg.TI   ; Does code show LDT Descriptor?
-                JZ              .Present         ; No! And GDT is already in DS!
+                POP             EDX
 
                 OR              EBX,x86.Seg.TI   ; Can now load DS with faulting LDT
                 MOV             DS,BX
 .Present:
                 AND             EDX,x86.Seg.Index ; Ignore extra bits in Error code
-                JZ              .BadDT            ; Zero? ZERO? (Must be VirtualBox!)
                 OR      BYTE    [EDX+x86.Desc.Type],x86.Desc.Type.Present
 
                 MOV             AX,Selector(GDT.VGA, GDT, RPL0)

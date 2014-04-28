@@ -28,8 +28,8 @@
 Exec.Ints:
                 CALL            Exec.Ints.Trace ; Install a Single-Step (TRACE) handler
                 CALL            Exec.Ints.Debug ; Install the Debugger
-                CALL            Exec.Ints.NoSeg ; Install an example NoSegment handler
 
+                CALL            Exec.Ints.NoSeg ; Install an example NoSegment handler
                 CALL            Exec.Ints.Double ; Install a Double Fault handler
                 CALL            Exec.Ints.BadStack ; Install a Bad Stack handler
                 CALL            Exec.Ints.BadTSS ; Install an Invalid TSS handler

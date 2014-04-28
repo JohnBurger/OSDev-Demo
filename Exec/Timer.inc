@@ -9,7 +9,7 @@
 Exec.Timer:
 ; First, install a Timer interrupt handler
                 MOV             EAX,Ints.Timer  ; Offset
-                MOV             EBX,IDT.Timer   ; Interrupt
+                MOV             BX,IDT.Timer    ; Interrupt
                 MOV             CX,Selector(GDT.Ints, GDT, RPL0)
                 MOV             DL,Type.Sys(Int, DPL0, 386)
                 CALL            Exec.Alloc.IDT

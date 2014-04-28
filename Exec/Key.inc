@@ -12,7 +12,7 @@
 Exec.Key:
 ; First, install a Keyboard interrupt handler
                 MOV             EAX,Ints.Key    ; Handler
-                MOV             EBX,IDT.Key     ; Interrupt
+                MOV             BX,IDT.Key      ; Interrupt
                 MOV             CX,Selector(GDT.Ints, GDT, RPL0)
                 MOV             DL,Type.Sys(Int, DPL0, 386)
                 CALL            Exec.Alloc.IDT
