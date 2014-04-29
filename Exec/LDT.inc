@@ -48,7 +48,7 @@ Exec.LDT.Stack  Desc.Mem        Exec.LDT.Stack.Top,  Exec.LDT.Stack.Limit, Exec.
 Exec.LDT.Code   Desc.Mem        Exec.LDT.Code.Base,  Exec.LDT.Code.Limit,  Exec.LDT.Code.Type,  Exec.LDT.Code.Gran
 
 Exec.LDT.NoSeg          EQU       $
-Exec.LDT.NoSeg.Stack    Desc.Mem  0, 0, 0, 0 ; Stack for Double Fault handler
+Exec.LDT.NoSeg.Stack    Desc.Mem  0, 0, 0, 0 ; Stack for Segment Not Present handler
 Exec.LDT.NoSeg.TSS      Desc.Mem  0, 0, 0, 0 ; Alias for TSS to read Backlink
 Exec.LDT.NoSeg.Alias    Desc.Mem  0, 0, 0, 0 ; Alias for Faulting TSS
 Exec.LDT.NoSeg.LDT      Desc.Mem  0, 0, 0, 0 ; Alias for Faulting LDT

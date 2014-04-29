@@ -22,11 +22,11 @@ Ints.Debug.Done:
                 MOV             AH,Debug.Colour.Blank
                 MOV             AL,' '
                 MOV             DH,Debug.VGA.Height
-                MOV             EDI,(Debug.VGA.Top*VGA.Cols+Debug.VGA.Left)*2
+                MOV             DI,(Debug.VGA.Top*VGA.Cols+Debug.VGA.Left)*2
 .Loop:
                 MOV             ECX,Debug.VGA.Width
                 REP             STOSW
-                ADD             EDI,(VGA.Cols-Debug.VGA.Width)*2
+                ADD             DI,(VGA.Cols-Debug.VGA.Width)*2
                 DEC             DH
                 JNZ             .Loop
 

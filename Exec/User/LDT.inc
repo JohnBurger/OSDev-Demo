@@ -21,7 +21,7 @@ Exec.User.LDT:
                 TEST            EAX,EAX                 ; Any left?
                 JZ              .Failed                 ; Nope!
 
-                MOV             DL,Type.Mem(Stack, DPL0, RW)
+                MOV             DL,Type.Mem(Stack, DPL0, RW) & ~System.Present
                 MOV             DH,Gran.Mem(Byte, Small)
                 CALL            Exec.Alloc.LDT.Mem      ; Allocate LDT Entry
                 CMP             AX,User.LDT.Stack0
@@ -33,7 +33,7 @@ Exec.User.LDT:
                 TEST            EAX,EAX                 ; Any left?
                 JZ              .Failed                 ; Nope!
 
-                MOV             DL,Type.Mem(Stack, DPL3, RW)
+                MOV             DL,Type.Mem(Stack, DPL3, RW) & ~System.Present
                 MOV             DH,Gran.Mem(Byte, Small)
                 CALL            Exec.Alloc.LDT.Mem      ; Allocate LDT Entry
                 CMP             AX,User.LDT.Stack3

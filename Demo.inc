@@ -65,7 +65,7 @@ PIC.B.Base      EQU             28h
 ; See Ints/Timer.inc for a discussion on this (significant!) definition
 System.TSS      EQU             x86.Desc.Mem.Gran.Avail
 
-; This may need to be set to zero if you're using VirtualBox or Virtual PC
+; This may need to be set to zero if you're using VirtualBox or Virtual PC. VMware is OK
 System.Present  EQU             x86.Desc.Type.Present
 
 ; This is the Descriptor for the Alias for the Descriptor Table that holds it

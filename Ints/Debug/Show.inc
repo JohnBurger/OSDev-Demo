@@ -18,8 +18,8 @@
 Ints.Debug.Show:
                 PUSH            ESI
 
-                MOV             ECX,Debug.Show.Height
-                MOV             EDI,(Debug.VGA.Top*VGA.Cols+Debug.VGA.Left)*2
+                MOV             CX,Debug.Show.Height
+                MOV             DI,(Debug.VGA.Top*VGA.Cols+Debug.VGA.Left)*2
 .Row:
                 PUSH            ECX               ; Need this later
 
@@ -33,7 +33,7 @@ Ints.Debug.Show:
 .Row.Blank:
                 MOV             AH,Debug.Colour.Blank
                 MOV             AL,' '            ; Blank
-                MOV             ECX,Debug.VGA.Width   ; Entire row
+                MOV             CX,Debug.VGA.Width    ; Entire row
                 ADD             ESI,Debug.BytesPerRow ; Catching up?
                 REP             STOSW
                 JMP             .Row.Next         ; Next row
@@ -45,7 +45,7 @@ Ints.Debug.Show:
                 CALL            EBP               ; Call current Row function
 
 .Row.Next:
-                ADD             EDI,(VGA.Cols-Debug.VGA.Width)*2
+                ADD             DI,(VGA.Cols-Debug.VGA.Width)*2
                 POP             ECX               ; More rows?
                 LOOP            .Row
 
@@ -124,8 +124,8 @@ Ints.Debug.Show.Bytes:
                 ; Now blank out any area to the right of the ASCII field
                 MOV             AL,' '
                 MOV             AH,Debug.Colour.ASCII
-                MOV             ECX,Debug.VGA.Width-Debug.Width.Addr-Debug.Width.Byte
-                ADD             EDI,Debug.BytesPerRow*2 ; Go past ASCII field
+                MOV             CX,Debug.VGA.Width-Debug.Width.Addr-Debug.Width.Byte
+                ADD             DI,Debug.BytesPerRow*2 ; Go past ASCII field
                 REP             STOSW
                 RET
 ;...............................................................................
@@ -176,7 +176,7 @@ Ints.Debug.Show.DWords:
 .NoDWord:
                 MOV             AH,Debug.Colour.DWords
                 MOV             AL,' '
-                MOV             ECX,8
+                MOV             CX,8
                 ADD             ESI,4             ; Catching up?
                 REP             STOSW
 .Separator:

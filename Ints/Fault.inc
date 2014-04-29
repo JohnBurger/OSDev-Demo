@@ -91,7 +91,7 @@ Ints.Fault.ShowRegs:
                 INC     BYTE    [ES:EDI]        ; Dingle(tm) that this INT happened
 
                 MOV             AH,Dev.VGA.RedBack | Dev.VGA.White ; White-on-red!
-                ADD             EDI,VGA.Cols * 2 ; On next row
+                ADD             DI,VGA.Cols * 2 ; On next row
 
                 CLD                             ; Work forwards
 .Dump:
@@ -128,9 +128,9 @@ Ints.Fault.ShowRegs:
                 PUSH            EDI             ; Save starting location
                 CALL            Ints.Hex        ; Display as Hex
                 POP             EDI
-                ADD             EDI,(VGA.Cols-Ints.Names.Label-1)*2 ; Next row
+                ADD             DI,(VGA.Cols-Ints.Names.Label-1)*2 ; Next row
 
-                CMP             ESI,Ints.Names.End ; End of registers?
+                CMP             SI,Ints.Names.End ; End of registers?
                 JB              .Dump           ; No, so continue
 
                 HLT                             ; Nothing more to do

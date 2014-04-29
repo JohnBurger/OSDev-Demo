@@ -32,7 +32,7 @@ Ints.Single:
                 MOV             AX,Selector(GDT.VGA,  GDT, RPL0) ; Point to Screen
                 MOV             ES,AX
 .Loop:
-                INC     BYTE    [ES:0002h]       ; Dingle(tm) screen location
+                INC     BYTE    [ES:WORD 0001h*2] ; Dingle(tm) screen location
 
                 HLT                              ; Wait for interrupt
 

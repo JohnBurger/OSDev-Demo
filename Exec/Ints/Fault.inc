@@ -63,7 +63,7 @@ Exec.Ints.Fault.Stack.Size   EQU   1000h        ; Give ourselves PLENTY of room!
                 MOV             [%$Base],EAX
 
                 MOV             EBX,[%$LDT.Triple]
-                OR              BX,WORD x86.Seg.TI      ; Index inside LDT
+                OR              EBX,x86.Seg.LDT   ; Index inside LDT
                 MOV             EDX,[%$Handler]
 
                 ; Initialise TSS values
@@ -103,7 +103,7 @@ Exec.Ints.Fault.Stack.Size   EQU   1000h        ; Give ourselves PLENTY of room!
 ; after they prepare the environment:
 ; Input:  [ESP+8] = Error code
 ;         [ESP+4] = Interrupt number
-;         EBX     = Pointer to 'my' TSS Alias in the Stack/Alias/Fault triple
+;         BX      = Pointer to 'my' TSS Alias in the Stack/Alias/Fault triple
 ;
 .Handler:
                 STI                           ; Interrupts may have been off
@@ -139,18 +139,18 @@ Exec.Ints.Fault.Stack.Size   EQU   1000h        ; Give ourselves PLENTY of room!
 ;...............................................................................
 ; This function gets the Back link field from 'my' TSS Alias and brute-force
 ; copies that TSS' Descriptor into the LDT for access as a Data Segment.
-; Input:  EBX = LDT pointer to 'my' TSS Alias
+; Input:   BX = LDT pointer to 'my' TSS Alias
 ; Output: EDX = My TSS' Back link value
 ;          DS = GDT Alias
 ;          ES = LDT Alias
 ;          FS = Faulting TSS Alias
-;          EBX modified
+;         EBX modified
 Exec.Ints.Fault.TSS:
                 MOV             AX,Selector(GDT.Alias, GDT, RPL0)
                 MOV             DS,AX         ; Need information from GDT
                 MOV             AX,Selector(Exec.LDT.Alias, LDT, RPL0)
                 MOV             ES,AX         ; Need to update alias in LDT
-                LEA             AX,[BX + x86.Seg.TI] ; Need my TSS alias in LDT
+                LEA             EAX,[EBX + x86.Seg.LDT] ; Need my TSS alias in LDT
                 MOV             FS,AX
 
                 ADD             EBX,x86.Desc_size ; Point to TSS alias in LDT
@@ -161,22 +161,20 @@ Exec.Ints.Fault.TSS:
                 MOV             AL,Type.Mem(Data, DPL0, NoRW)
                 CALL            Exec.Ints.Fault.Copy
 
-                LEA             AX,[BX + x86.Seg.TI] ; Selector for alias in LDT
+                LEA             EAX,[EBX + x86.Seg.LDT] ; Selector for alias in LDT
                 MOV             FS,AX
                 RET
 
 ; This function copies a Descriptor to the LDT and turns it into an alias.
 ; Input:   AL = Desired final .Type
-;         EBX = Pointer to LDT Descriptor to modify
-;         ESI = Pointer to Descriptor that's the source to copy
-;          DS = Source DT (GDT?)
-;          ES = LDT
+;       ES:BX = Pointer to LDT Descriptor to modify
+;      DS:ESI = Pointer to Descriptor that's the source to copy
 ; Output: ECX, ESI, EDI modified
 Exec.Ints.Fault.Copy:
                 ; Copy faulting Descriptor, then alter .Type to make it an alias
                 CLD                               ; Work forwards
                 MOV             ECX,x86.Desc_size / 4      ; Number of DWords
-                MOV             EDI,EBX
+                MOVZX           EDI,BX
                 REP             MOVSD             ; Brute force details across!
-                MOV             [ES:EBX+x86.Desc.Type],AL
+                MOV             [ES:BX+x86.Desc.Type],AL
                 RET

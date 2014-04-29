@@ -84,7 +84,7 @@ Ints.Debug:
                 MOV             DS,AX
                 CALL            .Desc.Next      ; Get first (real) Descriptor to Show
 .Refresh:
-                INC     BYTE    [ES:(VGA.Cols-1)*2] ; Display Dingle(tm)
+                INC     BYTE    [ES:WORD (VGA.Cols-1)*2] ; Display Dingle(tm)
 
                 CALL            .Show           ; Display memory
                 CALL            .Key            ; Look at keys
