@@ -19,6 +19,7 @@ Dev.Key.Esc     EQU             01h
 Dev.Key.Enter   EQU             1Ch
 Dev.Key.Space   EQU             39h
 
+Dev.Key.SysRq   EQU             37h
 Dev.Key.Pause   EQU             45h
 
 Dev.Key.Home    EQU             47h

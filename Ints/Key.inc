@@ -47,8 +47,8 @@ Ints.Key:
                 MOV             AL,Dev.PIC.Cmd.EOI ; Can now acknowledge PIC
                 OUT             Dev.PIC.A.Cmd,AL
 
-                CMP             AH,Dev.Key.Pause ; Also labeled "Break"...
-                JNE             .Continue        ; Don't Break?
+                CMP             AH,Debug.Key     ; Was it the debugger key?
+                JNE             .Continue        ; Don't invoke the Debugger?
                 STI                              ; Do! So need interrupts back on
                 DEBUG                            ; (Debugger uses keyboard)
 .Continue:

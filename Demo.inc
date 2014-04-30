@@ -28,6 +28,16 @@ User.Delay      EQU             0FFFFh  ; How long to 'idle'the Bounce animation
 ; A useful pseudo-instruction to invoke the built-in Debugger - after it's set up!
 %define         DEBUG           DB 0CCh ; INT 3 - NASM assembles this as 0CD 03h
 
+; This is the key to invoke the debugger.
+; Some laptops don't have a Pause/Break key. Perhaps SysRq instead?
+; Note that Pause/Break is designed to be a one-shot - it won't auto-repeat.
+; Some keyboards don't reproduce this behaviour - and if you use a different
+; key, it will repeat. To protect against invoking the debugger repeatedly,
+; OR in the Dev.Key.Break scancode. This means that the Debugger will only be
+; invoked (once) when you RELEASE the key, rather than when pressing it.
+Debug.Key       EQU             Dev.Key.Pause   ; Also labelled "Break"
+;Debug.Key       EQU             Dev.Key.Break | Dev.Key.SysRq ; Debug on SysRq UP
+
 ; Another macro for debugging. Enable Single Step debugging - after it's set up!
 %macro          TRACE           0
                 PUSHFD
@@ -66,7 +76,7 @@ PIC.B.Base      EQU             28h
 System.TSS      EQU             x86.Desc.Mem.Gran.Avail
 
 ; This may need to be set to zero if you're using VirtualBox or Virtual PC. VMware is OK
-System.Present  EQU             x86.Desc.Type.Present
+System.Present  EQU             0 ; x86.Desc.Type.Present
 
 ; This is the Descriptor for the Alias for the Descriptor Table that holds it
 DT.Alias        EQU             x86.Desc_size
@@ -78,7 +88,7 @@ DT.Alias        EQU             x86.Desc_size
 ;         LGDT  [GDT.Alloc.Pseudo]
 ; This is accomplished by:
 ; 1) Storing the linear base address of the GDT in .Pseudo.Base
-; 2) Storing the current GDT size in .Pseudo.Size
+; 2) Storing the current GDT limit in .Pseudo.Limit
 ; 3) As entries are freed, adding them to the .Free list (this uses the entries
 ;    themselves to store the next Free one, or 0 to end the list).
                 STRUC           GDT.Alloc

@@ -32,9 +32,11 @@ User.ColouredBall EQU           (User.BallColour << 8) | User.Ball
 
 User.Entry:
                 CLD                             ; Work forwards
-                MOV             [User.Data.Row],EBX
-                MOV             [User.Data.Left],DX  ; Left and Top
-                MOV             [User.Data.Width],CX ; Width and Height
+
+                ; Note that you can safely comment out the following three lines
+                MOV             [WORD User.Data.Row],EBX
+                MOV             [WORD User.Data.Left],DX  ; Left and Top
+                MOV             [WORD User.Data.Width],CX ; Width and Height
 
                 PUSH            ES
                 POP             DS              ; Don't need DS anymore
