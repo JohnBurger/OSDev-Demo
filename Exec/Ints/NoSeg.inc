@@ -17,19 +17,19 @@ Exec.Ints.NoSeg:
 .Handler:
 ;               PUSH   DWORD    0               ; Pseudo-fault code (not required)
                 PUSH            11              ; Interrupt number
+
+                MOV             AX,Selector(GDT.VGA, GDT, RPL0)
+                MOV             DS,AX
+                INC     BYTE    [WORD 000Bh*2]  ; Dingle(tm) to say we've done it!
+
                 MOV             BX,Exec.LDT.NoSeg.TSS   ; For TSS Backlink
                 MOV             EDX,[ESP+4]     ; Get Error code
                 CALL            Exec.Ints.NoSeg.Present
-                JNZ             .Dingle         ; Now present?
+                JNZ             .Finish         ; Now present?
 
                 ; VirtualBox PUSHes a zero error code. NOT very helpful!
                 MOV             BX,Exec.LDT.NoSeg.TSS   ; For TSS Backlink
                 CALL            Exec.Ints.Fault.Handler ; Can't handle this!
-                JMP             .Finish
-.Dingle:
-                MOV             AX,Selector(GDT.VGA, GDT, RPL0)
-                MOV             DS,AX
-                INC     BYTE    [WORD 000Bh*2]  ; Dingle(tm) to say we've done it!
 .Finish:
                 ADD             ESP,8           ; Get rid of interrupt number and Error code
                 IRETD                           ; Return, but resumes here, so...
@@ -70,8 +70,8 @@ Exec.Ints.NoSeg.Present:
                 CALL            Exec.Ints.Fault.TSS    ; Find TSS Backlink
 
                 MOV             AL,Type.Mem(Data, DPL0, RW) ; Alias' .Type (writable)
-                MOVZX           ESI,WORD [FS:x86.TSS.LDT] ; Point to faulting LDT
-                MOV             BX,Exec.LDT.NoSeg.LDT     ; Point to my Alias for it
+                MOVZX           ESI,WORD [FS:WORD x86.TSS.LDT] ; Point to faulting LDT
+                ADD             EBX,x86.Desc_size ; Point to LDT alias in my LDT
 
                 CALL            Exec.Ints.Fault.Copy      ; Copy across
                 POP             EDX
@@ -81,8 +81,11 @@ Exec.Ints.NoSeg.Present:
 .Present:
                 MOV             AX,7              ; Bit number of x86.Desc.Type.Present
                 AND             EDX,x86.Seg.Index ; Ignore extra bits in Error code
-                BTS             [EDX + x86.Desc.Type],AX
-                JNC             .Finish           ; Wasn't already set
+                BTS             [EDX + x86.Desc.Type],AX ; Set Present bit - already set?
+                JC              .Error            ; Already set! Something else is wrong...
+                CALL            Exec.Ints.Fault.TestIRQs ; May need to acknowledge IRQ(s)
+                INC             EAX               ; No Z flag on no error
+                JMP             .Finish
 .Error:
                 XOR             EAX,EAX           ; Z flag on Error!
 .Finish:

@@ -8,7 +8,7 @@
 
 Exec.User.LDT:
                 ; Allocate an LDT
-                MOV             ECX,User.LDT.Size       ; Need this many bytes
+                MOV             ECX,User.LDT.Size       ; Need this many bytes (zeroes high)
                 CALL            Exec.Alloc.LDT
                 TEST            EAX,EAX                 ; Any left?
                 JZ              .Failed                 ; Nope! Finished
@@ -16,7 +16,7 @@ Exec.User.LDT:
                 MOV             [%$LDT],EAX             ; Want to keep this!
 
                 ; Allocate Stack0
-                MOV             ECX,User.Stack0.Size    ; Get some RAM for Stack0
+                MOV             CX,User.Stack0.Size     ; Get some RAM for Stack0
                 CALL            Exec.Alloc.RAM
                 TEST            EAX,EAX                 ; Any left?
                 JZ              .Failed                 ; Nope!
@@ -28,7 +28,7 @@ Exec.User.LDT:
                 JNE             .Failed
 
                 ; Allocate Stack3
-                MOV             ECX,User.Stack3.Size    ; Get some RAM for Stack3
+                MOV             CX,User.Stack3.Size     ; Get some RAM for Stack3
                 CALL            Exec.Alloc.RAM
                 TEST            EAX,EAX                 ; Any left?
                 JZ              .Failed                 ; Nope!
@@ -40,7 +40,7 @@ Exec.User.LDT:
                 JNE             .Failed
 
                 ; Allocate Data
-                MOV             ECX,User.Data.Size      ; Get some RAM for Data
+                MOV             CX,User.Data.Size       ; Get some RAM for Data
                 CALL            Exec.Alloc.RAM
                 TEST            EAX,EAX                 ; Any left?
                 JZ              .Failed                 ; Nope!
@@ -53,7 +53,7 @@ Exec.User.LDT:
 
                 ; Allocate Code
                 MOV             EAX,User.Base           ; Assembled User code
-                MOV             ECX,User.Size
+                MOV             CX,User.Size
                 MOV             DL,Type.Mem(Code, DPL3, NoRW) & ~System.Present
                 MOV             DH,Gran.Mem(Byte, Def32)
                 CALL            Exec.Alloc.LDT.Mem      ; Allocate LDT Entry

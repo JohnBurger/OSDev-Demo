@@ -21,9 +21,9 @@
 ;         A fully set up new TSS, with Stack0, ready to execute at EDX
 ;         A Task Gate entry in the IDT at [EAX] pointing to the new TSS
 ;
-Exec.Ints.Fault:
-
 Exec.Ints.Fault.Stack.Size   EQU   1000h        ; Give ourselves PLENTY of room!
+
+Exec.Ints.Fault:
 
 %push Ints.Fault ; Let's not leave these %defines just lying around...
 
@@ -67,9 +67,9 @@ Exec.Ints.Fault.Stack.Size   EQU   1000h        ; Give ourselves PLENTY of room!
                 MOV             EDX,[%$Handler]
 
                 ; Initialise TSS values
-                MOV             [ES:x86.TSS.SS],BX
-                MOV             [ES:x86.TSS.CS],CS
-                MOV             [ES:x86.TSS.EIP],EDX
+                MOV             [ES:WORD x86.TSS.SS],BX
+                MOV             [ES:WORD x86.TSS.CS],CS
+                MOV             [ES:WORD x86.TSS.EIP],EDX
 
                 ; Enable it as a TSS
                 MOV             AH,System.TSS   ; Oh BOY is it a System TSS!
@@ -106,28 +106,8 @@ Exec.Ints.Fault.Stack.Size   EQU   1000h        ; Give ourselves PLENTY of room!
 ;         BX      = Pointer to 'my' TSS Alias in the Stack/Alias/Fault triple
 ;
 .Handler:
-                STI                           ; Interrupts may have been off
-
-.TestIRQs:
-                ; Worse, Fault may have happened during an IRQ handler!
-                ; Isolate IRQ handlers that have started but aren't acknowledged
-                MOV             AL,Dev.PIC.Cmd.ISR
-                OUT             Dev.PIC.A.Cmd,AL
-                JMP             $+2             ; Wait for I/O bus
-                IN              AL,Dev.PIC.A.Cmd
-
-                AND             AL,Dev.PIC.A.Key|Dev.PIC.A.Timer; Only worried about these
-                JZ              .NoInterrupts    ; Nothing to worry about!
-                CMP             AL,Dev.PIC.A.Key ; If keypress outstanding...
-                JE              .KeyInterrupt    ; Handle it
-                MOV             AL,Dev.PIC.Cmd.EOI ; Acknowledge
-                OUT             Dev.PIC.A.Cmd,AL ; current IRQ (should be Timer)
-                JMP             .TestIRQs        ; And keep looking
-
-.KeyInterrupt:
-                INT             (IDT.Key-IDT)/x86.Desc_size ; Re-invoke the Key interrupt
-; Continue
-.NoInterrupts:
+                STI                               ; Interrupts may have been off
+                CALL            Exec.Ints.Fault.TestIRQs
                 CALL            Exec.Ints.Fault.TSS
 
                 MOV             EDI,[ESP+4]       ; Load Interrupt number
@@ -135,6 +115,38 @@ Exec.Ints.Fault.Stack.Size   EQU   1000h        ; Give ourselves PLENTY of room!
                 CALL            GDT.Ints : Ints.Fault.External
 
                 ADD             ESP,4             ; Ignore faulting TR
+                RET
+;...............................................................................
+; This function checks to see if there are any unacknowledged interrupts.
+; Here's an example:
+; 1) A hardware interrupt occurs, and the CPU goes to service the interrupt;
+; 2) It's currently running at CPL3, so needs to switch to CPL0 and its stack;
+; 3) The new stack is marked as Not Present, so a Stack Fault is raised;
+; 4) The Stack is made present, and the faulting instruction is resumed;
+; The problem is: the faulting instruction is the interrupted instruction,
+; not the interrupt itself. In other words, the interrupt is lost!
+; The following re-invokes only the keyboard and timer interrupts, if present.
+;
+Exec.Ints.Fault.TestIRQs:
+.Retest:
+                ; Fault may have happened during an IRQ handler!
+                ; Isolate IRQ handlers that have started but aren't acknowledged
+                MOV             AL,Dev.PIC.Cmd.ISR
+                OUT             Dev.PIC.A.Cmd,AL
+                JMP             $+2             ; Wait for I/O bus
+                IN              AL,Dev.PIC.A.Cmd
+
+                AND             AL,Dev.PIC.A.Key|Dev.PIC.A.Timer; Only worried about these
+                JZ              .Finish          ; Nothing to worry about!
+                CMP             AL,Dev.PIC.A.Key ; If keypress outstanding...
+                JE              .KeyInterrupt    ; Handle it
+                MOV             AL,Dev.PIC.Cmd.EOI ; Acknowledge
+                OUT             Dev.PIC.A.Cmd,AL ; current IRQ (should be Timer)
+                JMP             .Retest          ; And keep looking
+
+.KeyInterrupt:
+                INT             (IDT.Key-IDT)/x86.Desc_size ; Re-invoke the Key interrupt
+.Finish:
                 RET
 ;...............................................................................
 ; This function gets the Back link field from 'my' TSS Alias and brute-force
@@ -155,7 +167,7 @@ Exec.Ints.Fault.TSS:
 
                 ADD             EBX,x86.Desc_size ; Point to TSS alias in LDT
 
-                MOVZX           ESI,WORD [FS:x86.TSS.Back] ; Who called me?
+                MOVZX           ESI,WORD [FS:WORD x86.TSS.Back] ; Who called me?
                 MOV             EDX,ESI           ; Remember for later
 
                 MOV             AL,Type.Mem(Data, DPL0, NoRW)

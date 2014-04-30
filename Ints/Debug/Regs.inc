@@ -3,7 +3,7 @@
 ;
 
 ; This module displays the registers stored on the stack, with the aid of
-; .Names.Regs in Debug.inc.
+; Ints.Names in Util.inc.
 
 Ints.Debug.Regs:
 

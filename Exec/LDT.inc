@@ -62,6 +62,7 @@ Exec.LDT.BadStack       EQU       $
 Exec.LDT.BadStack.Stack Desc.Mem  0, 0, 0, 0 ; Stack for BadStack Fault handler
 Exec.LDT.BadStack.TSS   Desc.Mem  0, 0, 0, 0 ; Alias for TSS to read Backlink
 Exec.LDT.BadStack.Alias Desc.Mem  0, 0, 0, 0 ; Alias for Faulting TSS
+Exec.LDT.BadStack.LDT   Desc.Mem  0, 0, 0, 0 ; Alias for Faulting LDT
 
 Exec.LDT.BadTSS         EQU       $
 Exec.LDT.BadTSS.Stack   Desc.Mem  0, 0, 0, 0 ; Stack for BadTSS Fault handler

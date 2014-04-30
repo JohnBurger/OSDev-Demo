@@ -8,7 +8,7 @@ Ints.Debug.Key:
                 HLT                             ; Wait for interrupt
 
                 MOV             AL,0            ; Consume any keypress
-                XCHG            [FS:Data.Key.Code],AL ; Avoid repeats
+                XCHG            [FS:WORD Data.Key.Code],AL ; Avoid repeats
 
                 CMP             AL,0            ; Anything there?
                 JE              .End            ; No, so leave

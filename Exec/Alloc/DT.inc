@@ -26,20 +26,28 @@
 ;         EDI modified
 
 Exec.Alloc.DT:
-                MOVZX           EAX,WORD [ES:DT.Alloc.Free] ; Get potential Free one
+                PUSH            DS
+
+                PUSH            ES
+                POP             DS              ; Use DS - more efficient
+
+                XOR             EDI,EDI         ; Use base addressing - it's smaller
+
+                MOVZX           EAX,WORD [EDI+DT.Alloc.Free] ; Get potential Free one
                 TEST            EAX,EAX                 ; Any?
                 JZ              .Grow                   ; No, so grow DT
 
-                MOVZX           EDI,WORD [ES:EAX + DT.Alloc.Free] ; Get Free's next
-                MOV             [ES:DT.Alloc.Free],EDI  ; Store as new Free
-                JMP             .End                    ; Done!
+                MOV             DI,[EAX + DT.Alloc.Free] ; Get Free's next
+                MOV             [EDI+DT.Alloc.Free],DI   ; Store as new Free
+                JMP             .End                     ; Done!
 .Grow:
-                MOV             AX,[ES:DT.Alloc.Limit]  ; Get current Limit
+                MOV             AX,[EDI+DT.Alloc.Limit] ; Get current Limit
                 INC             AX                      ; Add one
                 JZ              .End                    ; Uh oh! Full!
 
-                ADD     WORD    [ES:DT.Alloc.Limit],x86.Desc_size ; Increase Limit
+                ADD     WORD    [EDI+DT.Alloc.Limit],x86.Desc_size ; Increase Limit
 .End:
+                POP             DS
                 RET
 
 ;-------------------------------------------------------------------------------

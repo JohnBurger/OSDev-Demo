@@ -50,9 +50,9 @@ Exec.TSS.EFlags EQU             x86.EFlags.IF | x86.EFlags.1 ; Enable interrupts
 
                 MOV             AX,[%$LDT]
                 MOV             ECX,[%$Size]
-                MOV             [ES:x86.TSS.LDT],AX
-                MOV             [ES:x86.TSS.IOMap],CX
-                MOV    DWORD    [ES:x86.TSS.EFlags],Exec.TSS.EFlags
+                MOV             [ES:WORD x86.TSS.LDT],AX
+                MOV             [ES:WORD x86.TSS.IOMap],CX
+                MOV    DWORD    [ES:WORD x86.TSS.EFlags],Exec.TSS.EFlags
 
                 MOV             EAX,[%$Base]
 .End:
