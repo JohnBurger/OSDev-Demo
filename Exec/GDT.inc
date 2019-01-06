@@ -60,8 +60,6 @@ GDT.VGA         Desc.Mem        GDT.VGA.Base,      GDT.VGA.Limit,      GDT.VGA.T
 GDT.Ints        Desc.Mem        GDT.Ints.Base,     GDT.Ints.Limit,     GDT.Ints.Type,     GDT.Ints.Gran
 GDT.Exec.LDT    Desc.Mem        GDT.Exec.LDT.Base, GDT.Exec.LDT.Limit, GDT.Exec.LDT.Type, GDT.Exec.LDT.Gran
 
-GDT.Size        EQU             8192 * x86.Desc_size
-
 %if (GDT.Alias-GDT) != DT.Alias
 %error "Invalid GDT alias"
 %endif

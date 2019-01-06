@@ -19,18 +19,26 @@ Exec.Init:
                 PUSH   DWORD    x86.EFlags.1
                 POPFD
 
-                ; Point to global Data
-                MOV             AX,Selector(GDT.Data, GDT, RPL0)
-                MOV             DS,AX           ; Try to keep this here
+                ; Point to GDT. (With GS! How apt!)
+                MOV             AX,Selector(GDT.Alias, GDT, RPL0)
+                MOV             GS,AX           ; Try to keep this here
+
+                ; Zero out the rest of the GDT
+                MOV             ES,AX           ; About to do a STOSD - need ES
+                CLD                             ; Set direction flag to Forward
+                XOR             EAX,EAX         ; Zeroes
+                MOV             ECX,(GDT.Size - GDT.Size.Init) / 4
+                MOV             EDI,GDT.Size.Init ; Point past initial size
+                REP             STOSD           ; Each STOSD is 4 bytes, thus /4
 
                 ; Point to Screen
                 MOV             AX,Selector(GDT.VGA, GDT, RPL0)
                 MOV             ES,AX           ; This will be used for lots
                 MOV             FS,AX           ; Try to keep this here
 
-                ; Point to GDT. (With GS! How apt!)
-                MOV             AX,Selector(GDT.Alias, GDT, RPL0)
-                MOV             GS,AX           ; Try to keep this here
+                ; Point to global Data
+                MOV             AX,Selector(GDT.Data, GDT, RPL0)
+                MOV             DS,AX           ; Try to keep this here
 
                 MOV    DWORD    [Data.RAM],Demo.First
 

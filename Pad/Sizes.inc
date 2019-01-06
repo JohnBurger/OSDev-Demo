@@ -105,4 +105,8 @@ GDT.Limit       EQU             $ - $$ - 1
 
 ; Note that GDT grows from here - no alignment necessary
 
-%assign         Demo.Size       Demo.Size + GDT.Limit + 1
+GDT.Size.Init   EQU             $ - $$   ; Initial size of GDT
+
+GDT.Size        EQU             8192 * x86.Desc_size ; Largest size of GDT
+
+%assign         Demo.Size       Demo.Size + GDT.Size.Init

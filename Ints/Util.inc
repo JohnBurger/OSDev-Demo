@@ -47,7 +47,7 @@ Ints.Switch:
                 CMP             BX,[GDT.Alloc.Limit] ; Too far?
                 JB              .Continue            ; Not yet...
 .Restart:
-                MOV             BX,GDT.Limit+1       ; Yes. Start at original Limit
+                MOV             BX,GDT.Size.Init ; Yes. Start at original Size
 .Continue:
                 CMP             EBX,EDX         ; Looped back to here again?
                 JE              .Finish         ; Yes, so nothing to switch to
