@@ -5,7 +5,8 @@
 %define         Version.Program   "Demonstrator"
 %define         Version.Author    "John Burger"
 %define         Version.Name      Version.Author, "'s 80386 ", Version.Program
-%define         Version.Copyright "(c)2014"
+%substr         Version.Year      __DATE__ 3, 2
+%define         Version.Copyright "(c)2014-", Version.Year
 
 %define         Version.Major   1
 %define         Version.Minor   0
