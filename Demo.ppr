@@ -26,6 +26,7 @@ Demo
 		x86\EFlags.inc
 		x86\Seg.inc
 		x86\CR0.inc
+		x86\CR3.inc
 		x86\Desc.inc
 		x86\TSS.inc
 		x86\IVT.inc
@@ -58,7 +59,7 @@ Demo
 		Boot\VGA.inc
 		Boot\PM.inc
 	Data.inc
-	+Ints
+	-Ints
 		Ints\Ints.inc
 		Ints\IDT.inc
 		Ints\Vectors.inc
@@ -75,13 +76,13 @@ Demo
 		Ints\Timer.inc
 		Ints\Key.inc
 		Ints\Util.inc
-	+User
+	-User
 		User\User.inc
 		User\LDT.inc
 		User\Data.inc
 		User\Code.inc
 		User\Frame.inc
-	+Exec
+	-Exec
 		Exec\Exec.inc
 		Exec\Init.inc
 		-Ints
@@ -96,11 +97,11 @@ Demo
 		Exec\PICs.inc
 		Exec\Timer.inc
 		Exec\Key.inc
-		+User
+		-User
 			Exec\User\User.inc
 			Exec\User\LDT.inc
 			Exec\User\TSS.inc
-		+Alloc
+		-Alloc
 			Exec\Alloc\Alloc.inc
 			Exec\Alloc\RAM.inc
 			Exec\Alloc\DT.inc
@@ -110,7 +111,7 @@ Demo
 			Exec\Alloc\TSS.inc
 		Exec\LDT.inc
 		Exec\GDT.inc
-	+Pad
+	-Pad
 		Pad\Sizes.inc
 		Pad\HardDisk.inc
 		-ISO

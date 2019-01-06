@@ -23,7 +23,7 @@
 ;
 ; It has been written to be assembled with the Netwide Assembler NASM, which
 ; is a free download (http://www.nasm.us/) and will run on a number of different
-; development platforms - Windows, Linux and OS-X.
+; development platforms - Windows, Linux and macOS.
 ;
 ; The NASM command line to assemble this source depends on the desired format:
 ; For CD:        nasm -o Demo.iso Demo.asm
