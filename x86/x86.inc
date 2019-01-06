@@ -14,6 +14,8 @@
 ;-------------------------------------------------------------------------------
 %include        "x86/CR0.inc"           ; Definitions for CR0 register
 ;-------------------------------------------------------------------------------
+%include        "x86/CR3.inc"           ; Definitions for CR3 register (PDBR)
+;-------------------------------------------------------------------------------
 %include        "x86/Desc.inc"          ; Definitions for Descriptors
 ;-------------------------------------------------------------------------------
 %include        "x86/TSS.inc"           ; Definitions for Task State Segment
