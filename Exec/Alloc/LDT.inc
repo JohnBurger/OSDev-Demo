@@ -61,8 +61,8 @@ Exec.Alloc.LDT:
 %pop
                 RET
 ;-------------------------------------------------------------------------------
-; This function converts a Segment previously allocated with Alloc.LDT (above)
-; into a true LDT.
+; This function converts a Segment previously allocated with Exec.Alloc.LDT
+; (above) into a true LDT.
 ;
 ; Input:  ES = Descriptor to modify
 ; Output: ES, EBX modified
@@ -79,8 +79,10 @@ Exec.Alloc.LDT.Enable:
 
                 RET
 ;-------------------------------------------------------------------------------
-; This function allocates a new Desc.Sys in an LDT
-; Input:  ES     = LDT to modify
+; This function allocates a new Desc.Sys in an LDT.
+; Note that it DOESN'T grow the actual LDT or Alias - these are assumed to
+; already be of the maximum required size from the original Exec.Alloc.LDT.
+; Input:  ES     = LDT (alias) to modify
 ;         CX:EAX = Selector : Offset of handler
 ;         DL     = Descriptor Type
 ; Output: EAX    = Allocated Descriptor, or zero on error
@@ -103,7 +105,9 @@ Exec.Alloc.LDT.Sys:
 
 ;-------------------------------------------------------------------------------
 ; This function allocates a new Desc.Mem in an LDT
-; Input:  ES     = LDT to modify
+; Note that it DOESN'T grow the actual LDT or Alias - these are assumed to
+; already be of the maximum required size from the original Exec.Alloc.LDT.
+; Input:  ES     = LDT (alias) to modify
 ;         EAX    = Base
 ;         ECX    = Size (Converted to Limit)
 ;         DL     = Descriptor Type

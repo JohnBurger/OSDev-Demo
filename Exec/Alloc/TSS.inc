@@ -19,6 +19,7 @@
 Exec.Alloc.TSS:
 
 Exec.TSS.EFlags EQU             x86.EFlags.IF | x86.EFlags.1 ; Enable interrupts
+; A User-mode TSS should not have interrupts disabled!
 
 %push Alloc.TSS ; Let's not leave these %defines just lying around...
 %define         %$LDT           EBP - 4

@@ -76,7 +76,7 @@ Ints.Int14:
 Ints.Int15:
                 PUSH   DWORD    0       ; Pseudo-fault code
                 PUSH   DWORD    15      ; Interrupt number
-;               JMP             Ints.Vector
+;               JMP             Ints.Vector ; Not required
 
 Ints.Vector     JMP             Ints.Fault
 

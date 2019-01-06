@@ -13,6 +13,7 @@ User.Frame:
 
                 MOV             EDX,EDI         ; Save this away
                 MOV             AL,'Ú'          ; TopLeft corner
+;           TRACE ; Comment in or out to play with Single Stepping
                 STOSW                           ; Store on screen
                 MOV             AL,'Ä'          ; Top
                 MOV             CL,BL           ; This many

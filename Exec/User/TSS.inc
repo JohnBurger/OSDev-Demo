@@ -25,7 +25,7 @@ Exec.User.TSS:
                 MOV             EDX,[%$Pos]
 
                 XOR             EBX,EBX ; Use relative addressing: more code efficient
-; Note that TSS is already zeroed - no need to store again
+; Note that TSS is already zeroed - no need to store zeroes again
                 MOV     WORD    [EBX + x86.TSS.CS],  Selector(User.LDT.Code,   LDT, RPL3)
                 MOV     WORD    [EBX + x86.TSS.EIP], User.Entry
                 MOV     WORD    [EBX + x86.TSS.SS0], Selector(User.LDT.Stack0, LDT, RPL0)

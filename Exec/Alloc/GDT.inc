@@ -5,7 +5,8 @@
 ; This module provides functions to allocate entries in the GDT.
 
 ;-------------------------------------------------------------------------------
-; This function allocates a new Desc.Sys in the GDT
+; This function allocates a new Desc.Sys in the GDT.
+; Note that it grows the actual GDT - the Alias is already full size
 ; Input:  CX:EAX = Selector : Offset of handler
 ;         DL     = Descriptor Type
 ; Output: EAX    = Allocated Descriptor, or zero on error
@@ -32,6 +33,7 @@ Exec.Alloc.GDT.Sys:
 
 ;-------------------------------------------------------------------------------
 ; This function allocates a new Desc.Mem in the GDT
+; Note that it grows the actual GDT - the Alias is already full size
 ; Input:  EAX    = Base
 ;         ECX    = Size (Converted to Limit)
 ;         DL     = Descriptor Type

@@ -41,6 +41,7 @@ Exec.User:
                 JZ              .Finished
 
                 ; Create a TSS to run that User Task
+                ; Note that this function wants the TSS in AX. Oh, look!
                 CALL            Exec.User.TSS
                 TEST            EAX,EAX
                 JZ              .Finished
