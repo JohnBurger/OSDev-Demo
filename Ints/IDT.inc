@@ -16,9 +16,10 @@
 
                 USE32
 
-IDT.Trap        EQU             Type.Sys(Trap, DPL0, 386)
 IDT.Int         EQU             Type.Sys(Int,  DPL0, 386)
-IDT.User        EQU             Type.Sys(Trap, DPL3, 386)
+IDT.Trap        EQU             Type.Sys(Trap, DPL0, 386)
+IDT.User.Int    EQU             Type.Sys(Int,  DPL3, 386)
+IDT.User.Trap   EQU             Type.Sys(Trap, DPL3, 386)
 
 IDT:
 IDT.Divide      Desc.Sys        GDT.Ints, Ints.Int0, IDT.Trap     ; Int 00h
@@ -71,5 +72,5 @@ IDT.IRQ13       Desc.Sys        GDT.Ints, Ints.IRQ13, IDT.Int     ; Int 2Dh
 IDT.IDE0        Desc.Sys        GDT.Ints, Ints.IRQ14, IDT.Int     ; Int 2Eh
 IDT.IDE1        Desc.Sys        GDT.Ints, Ints.IRQ15, IDT.Int     ; Int 2Fh
 
-IDT.Halt        Desc.Sys        GDT.Ints, Ints.Halt, IDT.User     ; Int 30h
-IDT.Yield       Desc.Sys        GDT.Ints, Ints.Yield, IDT.User    ; Int 31h
+IDT.Halt        Desc.Sys        GDT.Ints, Ints.Halt, IDT.User.Trap; Int 30h
+IDT.Yield       Desc.Sys        GDT.Ints, Ints.Yield, IDT.User.Int; Int 31h
