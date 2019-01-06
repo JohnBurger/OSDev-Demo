@@ -84,7 +84,7 @@ DT.Alias        EQU             x86.Desc_size
 ; The following structure is held in the first (NULL) GDT entry. It holds the
 ; information about the current state of the GDT: how big it is, and which
 ; entries have been returned.
-; It is designed to enable the the following instruction to be used:
+; It is designed to enable the following instruction to be used:
 ;         LGDT  [GDT.Alloc.Pseudo]
 ; This is accomplished by:
 ; 1) Storing the linear base address of the GDT in .Pseudo.Base

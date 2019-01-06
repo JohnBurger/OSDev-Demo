@@ -7,7 +7,7 @@
 ; of the interrupt - oh, and a pseudo-fault code if one isn't already generated.
 
 ; To save space, the handler has been put in the middle of the vectors, to
-; allow the assembler to use th shorter form of the JMP instruction.
+; allow the assembler to use the shorter form of the JMP instruction.
 
                 SEGMENT    Ints  VSTART=0  ALIGN=16
 
