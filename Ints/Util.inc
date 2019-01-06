@@ -132,35 +132,41 @@ Ints.Hex:
 ; The following table lists the information for each register to show:
 ; Debug offset, Label, Num Hex chars, Stack offset, TSS offset
 
-Ints.Names:
-.Label          EQU             4  ; Width of label
-;                              Debug,  Name , W,Stk,TSS
-                DB                 0, ' Int', 2, 68, 20 ; On stack
-                DB                 0, ' Err', 4, 72, 24 ; On stack
-.Regs: ; Only registers from here
-                DB              002h, ' EAX', 8, 64, 40
-                DB              011h, ' EBX', 8, 52, 52
-                DB              020h, ' ECX', 8, 60, 44
-                DB              02Fh, ' EDX', 8, 56, 48
-                DB              042h, ' ESI', 8, 40, 64
-                DB              051h, ' EDI', 8, 36, 68
-                DB              060h, ' EBP', 8, 44, 60
-                DB              0DAh, ' ESP', 8, 48, 56
-                DB              0C7h, ' EIP', 8, 76, 32
-                DB              0C2h, '  CS', 4, 80, 76
-                DB              082h, '  DS', 4, 32, 84
-                DB              08Dh, '  ES', 4, 28, 72
-                DB              098h, '  FS', 4, 24, 88
-                DB              0A3h, '  GS', 4, 20, 92
-                DB              0D5h, '  SS', 4, 16, 80
-                DB              06Fh, 'Flag', 8, 84, 36
-                DB              0AFh, 'PDBR', 8,  4, 28 ; Minimum NOT on stack
-                DB              0F3h, 'Task', 4, 12, 12 ; On stack
-                DB              0E9h, ' LDT', 4,  8, 96
-.End            EQU             $
 ;    0000000000000000111111111111111122222222222222223333333333333333
 ;    0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF
 ;000:  _EAX:########  _EBX:########  _ECX:########  _EDX:########
 ;040:  _ESI:########  _EDI:########  _EBP:########  Flag:########
 ;080:  __DS:####  __ES:####  __FS:####  __GS:####   PDBR:########
 ;0C0:  __CS:####:######## __SS:####:######### _LDT:#### Task:####
+
+Ints.Names:
+.Row1           EQU             000h
+.Row2           EQU             040h
+.Row3           EQU             080h
+.Row4           EQU             0C0h
+
+.Label          EQU             4  ; Width of label
+;                                    Debug,  Name , W,Stk,TSS
+                DB                       0, ' Int', 2, 68, 20 ; On stack
+                DB                       0, ' Err', 4, 72, 24 ; On stack
+.Regs: ; Only registers from here
+                DB              .Row1+002h, ' EAX', 8, 64, 40
+                DB              .Row1+011h, ' EBX', 8, 52, 52
+                DB              .Row1+020h, ' ECX', 8, 60, 44
+                DB              .Row1+02Fh, ' EDX', 8, 56, 48
+                DB              .Row2+002h, ' ESI', 8, 40, 64
+                DB              .Row2+011h, ' EDI', 8, 36, 68
+                DB              .Row2+020h, ' EBP', 8, 44, 60
+                DB              .Row4+01Ah, ' ESP', 8, 48, 56
+                DB              .Row4+007h, ' EIP', 8, 76, 32
+                DB              .Row4+002h, '  CS', 4, 80, 76
+                DB              .Row3+002h, '  DS', 4, 32, 84
+                DB              .Row3+00Dh, '  ES', 4, 28, 72
+                DB              .Row3+018h, '  FS', 4, 24, 88
+                DB              .Row3+023h, '  GS', 4, 20, 92
+                DB              .Row4+015h, '  SS', 4, 16, 80
+                DB              .Row2+02Fh, 'Flag', 8, 84, 36
+                DB              .Row3+02Fh, 'PDBR', 8,  4, 28 ; Minimum NOT on stack
+                DB              .Row4+033h, 'Task', 4, 12, 12 ; On stack
+                DB              .Row4+029h, ' LDT', 4,  8, 96
+.End            EQU             $
