@@ -63,6 +63,7 @@ Boot.Skip:
 .ReadSome:
                 SUB             [CS:.NumToRead],AL ; Read enough?
                 JZ              .Done              ; Success!
+                INC             SI                 ; Increase retry count
 
 ; Note that the next calculation only works for a few number of sectors.
 ; If a larger number were required, the "Sectors per Track" would overflow,
