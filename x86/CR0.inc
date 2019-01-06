@@ -7,6 +7,8 @@
 ; PaGing: Enable paging (when in Protected Mode)
 x86.CR0.PG      EQU             1000_0000_0000_0000_0000_0000_0000_0000b
 
+%if __CPU__>=486
+
 ; Cache Disable: Disable memory cache
 x86.CR0.CD      EQU             0100_0000_0000_0000_0000_0000_0000_0000b
 
@@ -24,6 +26,8 @@ x86.CR0.NE      EQU             0000_0000_0000_0000_0000_0000_0010_0000b
 
 ; Extension Type: Indicates (legacy) support for FPU instructions
 x86.CR0.ET      EQU             0000_0000_0000_0000_0000_0000_0001_0000b
+
+%endif ; >=486
 
 ; Task Switched: Set on every hardware task switch, so FPU instructions fault
 x86.CR0.TS      EQU             0000_0000_0000_0000_0000_0000_0000_1000b

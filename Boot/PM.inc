@@ -25,7 +25,7 @@ Boot.PM:
                 CLI                             ; Disable interrupts!
                 MOV             EAX,CR0
                 OR              AL,x86.CR0.PE
-                MOV             CR0,EAX
+                MOV             CR0,EAX         ; SWITCH!
 
 ; First, load the LDT
                 LLDT            BX

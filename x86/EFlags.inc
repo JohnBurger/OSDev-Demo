@@ -4,6 +4,8 @@
 
 ; The following are the bitfields in the EFlags register
 
+%if __CPU__>=586
+
 ; ID flag: If this bit can be set/cleared, then CPUID is supported
 x86.EFlags.ID   EQU             0000_0000_0010_0000_0000_0000_0000_0000b
 
@@ -13,8 +15,14 @@ x86.EFlags.VIP  EQU             0000_0000_0001_0000_0000_0000_0000_0000b
 ; Virtual Interrupt Flag
 x86.EFlags.VIF  EQU             0000_0000_0000_1000_0000_0000_0000_0000b
 
+%endif ; >=586
+
+%if __CPU__>=486
+
 ; Alignment Check/Access Control
 x86.EFlags.AC   EQU             0000_0000_0000_0100_0000_0000_0000_0000b
+
+%endif ; >=486
 
 ; Virtual-8086 Mode
 x86.EFlags.VM   EQU             0000_0000_0000_0010_0000_0000_0000_0000b

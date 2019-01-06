@@ -59,6 +59,10 @@
 ; whether the assembler understands what you thought you told it...
                 [map all Demo.map]
 
+%define         __CPU__         386   ; Assume we're running on this (maximum)
+
+                CPU  __CPU__
+
 ; You can tailor the output (make it smaller) by modifying these %defines,
 ; depending on just what the final desired output format will be. See the usage
 ; of the IMAGE.* defines at the bottom of this file.
@@ -85,7 +89,7 @@
 ; This is the BIOS Boot entry point. It runs in Real Mode, and assumes the
 ; standard BIOS Boot Specification 1.01.
 
-                USE16           ; Start in 16-bit Real Mode
+                BITS 16         ; Start in 16-bit Real Mode
 
 %include        "Boot/Boot.inc" ; Real Mode bootstrap
 
@@ -94,7 +98,7 @@
 ; From here down is Protected Mode code. It is loaded by the above Boot code
 ; to the defined location, "jettisoning" the above code as it's no longer needed
 
-                USE32           ; The rest is 32-bit Protected Mode
+                BITS 32         ; The rest is 32-bit Protected Mode
 
 %include        "Data.inc"      ; Global Data
 ;===============================================================================

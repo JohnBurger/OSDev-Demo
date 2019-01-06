@@ -38,10 +38,15 @@
 ; ES:SI is possibly a pointer to the MBR Partition table entry (See Load.inc).
 ; In any case: don't clobber DL, ES or SI before Load.inc!
 
+                CPU  8086       ; Don't use illegal op-codes before you know!
+
 %include        "Boot/Entry.inc" ; Entry code to initialise important registers
 ;-------------------------------------------------------------------------------
 %include        "Boot/CPU.inc"  ; Check CPU is (at least) a '386
 ;-------------------------------------------------------------------------------
+
+                CPU  __CPU__    ; Enable highest level of op-codes
+
 %include        "Boot/Load.inc" ; Load Protected Mode code
 ;-------------------------------------------------------------------------------
 %include        "Boot/IDT.inc"  ; Move IDT to final location
