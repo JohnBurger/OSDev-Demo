@@ -60,7 +60,7 @@ IDT.Max         EQU             x86.Ints * x86.Desc_size ; Full size of IDT
 Code.Base       EQU             1000h
 
 Load.Base       EQU             IDT.Start       ; Load from start of defined IDT
-Load.Max        EQU             8 * BIOS.Disk.Sector.Size ; See Boot/Load.inc for why
+Load.Max        EQU             9 * BIOS.Disk.Sector.Size ; See Boot/Load.inc for why
 
 ; This will be the first-available RAM after everything else is initialised
 Demo.First      EQU             Load.Base + Load.Size + GDT.Size + Exec.Stack.Size
