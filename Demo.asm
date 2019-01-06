@@ -10,7 +10,7 @@
 
 %define         Version.Major   1
 %define         Version.Minor   0
-%define         Version.Build   1000
+%define         Version.Build   102
 
 %defstr         Version.String  %[Version.Major].%[Version.Minor].%[Version.Build]
 

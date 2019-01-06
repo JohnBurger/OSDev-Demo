@@ -58,7 +58,7 @@ Demo
 		Boot\VGA.inc
 		Boot\PM.inc
 	Data.inc
-	-Ints
+	+Ints
 		Ints\Ints.inc
 		Ints\IDT.inc
 		Ints\Vectors.inc
@@ -75,13 +75,13 @@ Demo
 		Ints\Timer.inc
 		Ints\Key.inc
 		Ints\Util.inc
-	-User
+	+User
 		User\User.inc
 		User\LDT.inc
 		User\Data.inc
 		User\Code.inc
 		User\Frame.inc
-	-Exec
+	+Exec
 		Exec\Exec.inc
 		Exec\Init.inc
 		-Ints
@@ -96,11 +96,11 @@ Demo
 		Exec\PICs.inc
 		Exec\Timer.inc
 		Exec\Key.inc
-		-User
+		+User
 			Exec\User\User.inc
 			Exec\User\LDT.inc
 			Exec\User\TSS.inc
-		-Alloc
+		+Alloc
 			Exec\Alloc\Alloc.inc
 			Exec\Alloc\RAM.inc
 			Exec\Alloc\DT.inc
@@ -110,7 +110,7 @@ Demo
 			Exec\Alloc\TSS.inc
 		Exec\LDT.inc
 		Exec\GDT.inc
-	-Pad
+	+Pad
 		Pad\Sizes.inc
 		Pad\HardDisk.inc
 		-ISO
@@ -124,10 +124,10 @@ Demo
 			Pad\ISO\RootDir.inc
 		Pad\Floppy.inc
 [Open project files]
-0=Demo.inc
+0=Demo.asm
 [Selected Project Files]
 Main=Demo.asm
-Selected=Demo.inc
-[Demo.inc]
+Selected=Demo.asm
+[Demo.asm]
 TopLine=1
 Caret=1,1

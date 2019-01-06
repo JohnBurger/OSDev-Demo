@@ -4,7 +4,7 @@
 
 ; This file defines the Primary Volume Sector for the ISO image.
 
-%define         Version.System          Version.Program, " ", Version.Copyright, " v.", Version.String
+%define         Version.System          Version.Program, " ", Version.Copyright, " v", Version.String
 
 %define         ISO.Primary.System      Version.System
 %define         ISO.Primary.Volume      Version.Name
