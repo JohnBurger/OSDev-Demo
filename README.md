@@ -2,7 +2,7 @@
 
 ##Demonstrator for OSDev.org
 
-Full description: http://Wiki.OSDev.org/User:JohnBurger/Demo
+Full description: http://Wiki.OSDev.org/User:Johnburger/Demo
 
 ###INSTRUCTIONS
 
