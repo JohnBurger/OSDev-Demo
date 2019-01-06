@@ -8,6 +8,8 @@
 ; literally, if you think of the silicon as defining the CPU's operation.
 
 ;-------------------------------------------------------------------------------
+%include        "x86/OpCodes.inc"       ; Definitions for x86 OpCodes-as-data
+;-------------------------------------------------------------------------------
 %include        "x86/EFlags.inc"        ; Definitions for EFlags register
 ;-------------------------------------------------------------------------------
 %include        "x86/Seg.inc"           ; Definitions for Segment register

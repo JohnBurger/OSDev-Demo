@@ -23,6 +23,7 @@ Demo
 	Demo
 	-x86
 		x86\x86.inc
+		x86\OpCodes.inc
 		x86\EFlags.inc
 		x86\Seg.inc
 		x86\CR0.inc

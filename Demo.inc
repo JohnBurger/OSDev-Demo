@@ -25,9 +25,6 @@ User.BallColour EQU             Dev.VGA.BlueBack  | Dev.VGA.White
 User.FrameColour EQU            Dev.VGA.GreenBack | Dev.VGA.White
 User.Delay      EQU             0FFFFh  ; How long to 'idle'the Bounce animation
 
-; A useful pseudo-instruction to invoke the built-in Debugger - after it's set up!
-%define         DEBUG           DB 0CCh ; INT 3 - NASM assembles this as 0CD 03h
-
 ; This is the key to invoke the debugger.
 ; Some laptops don't have a Pause/Break key. Perhaps SysRq instead?
 ; Note that Pause/Break is designed to be a one-shot - it won't auto-repeat.
@@ -51,6 +48,7 @@ IVT.Base        EQU             x86.IVT.Base
 IVT.Size        EQU             x86.IVT.Size
 BDA.Base        EQU             BIOS.BDA.Base
 BDA.Size        EQU             BIOS.BDA.Size
+
 Data.Base       EQU             BDA.Base + BDA.Size
 Data.Size       EQU             IDT.Base - Data.Base
 
