@@ -1,12 +1,12 @@
-#OSDev-Demo
+# OSDev-Demo
 
-##Demonstrator for OSDev.org
+## Demonstrator for OSDev.org
 
-Full description: http://Wiki.OSDev.org/User:Johnburger/Demo
+Full description: https://Wiki.OSDev.org/User:Johnburger/Demo
 
-###INSTRUCTIONS
+### INSTRUCTIONS
 
-####Just to try:
+#### Just to try:
 1. Download `Demo.iso` (46 kiB)
 2. Burn `Demo.iso` to a CD -or- use file as a CD in
    [VMware](https://my.vmware.com/web/vmware/free#desktop_end_user_computing/vmware_player/6_0),
@@ -18,7 +18,7 @@ Full description: http://Wiki.OSDev.org/User:Johnburger/Demo
 4. Press &lt;Break&gt; on the keyboard, and use &lt;Up&gt;, &lt;Down&gt;, &lt;PgUp&gt;, &lt;PgDn&gt;, &lt;Left&gt;, &lt;Right&gt;, &lt;Del&gt; and &lt;Esc&gt;.
 5. Press &lt;Break&gt; again. And again. And again. And...
 
-####To Experiment:
+#### To Experiment:
 1. Use GitHub's "Download ZIP" link to get all these files at once -or- Clone the repository for a full Git environment.
 2. Install the [NASM](http://www.nasm.us/) assembler.
 3. Under Windows, I suggest using [PSPad](http://www.pspad.com/), but only because a `.ppr` (PSPad Project) file is included.
