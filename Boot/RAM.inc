@@ -31,7 +31,7 @@ Boot.RAM:
 
                 CMP             CL,BIOS.RAMMap.Flags ; Don't mind optional Flags DWORD
                 JB              .Skip           ; Ignore if too small
-                JE              .Test           ; No .Flags entry, so valid
+                JE              .Test           ; No .Flags entry; still valid
 
                 TEST            [DI+BIOS.RAMMap.Flags],BYTE BIOS.RAMMap.Flags.DontIgnore
                 JZ              .Skip           ; Ignore if told to

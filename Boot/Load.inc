@@ -18,9 +18,9 @@ Boot.Load:
                 JMP             Boot.Skip          ; JMP over potential MBR write!
 
 Boot.Skip.Pad   EQU             BIOS.MBR.BPB.Write - ($-$$)
-                TIMES           Boot.Skip.Pad DB 00h
+                TIMES           Boot.Skip.Pad DB 00h  ; May need extra bytes
 
-Boot.MBR.BPB    DB              00h
+Boot.MBR.BPB    DB              00h                ; Sacrificial byte
 
 Boot.Skip:
 ;               MOV             ES,AX              ; Not yet! Need BIOS value
